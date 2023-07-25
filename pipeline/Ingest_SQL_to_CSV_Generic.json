@@ -56,7 +56,8 @@
 						"referenceName": "CSV_Generic_DS",
 						"type": "DatasetReference",
 						"parameters": {
-							"directoryPath": "Address"
+							"directoryPath": "Address",
+							"fileName": "Customer Address"
 						}
 					}
 				]

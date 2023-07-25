@@ -73,6 +73,10 @@
 										"directoryPath": {
 											"value": "@item()",
 											"type": "Expression"
+										},
+										"fileName": {
+											"value": "@item()",
+											"type": "Expression"
 										}
 									}
 								}

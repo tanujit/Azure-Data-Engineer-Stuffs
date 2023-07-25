@@ -1,0 +1,13 @@
+{
+	"name": "ADLS_Gen2_LS",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"description": "This linked service is created to connect ADLS with ADF",
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://tanujit11031998adlsgen2.dfs.core.windows.net/",
+			"encryptedCredential": "ew0KICAiVmVyc2lvbiI6ICIyMDE3LTExLTMwIiwNCiAgIlByb3RlY3Rpb25Nb2RlIjogIktleSIsDQogICJTZWNyZXRDb250ZW50VHlwZSI6ICJQbGFpbnRleHQiLA0KICAiQ3JlZGVudGlhbElkIjogIkRBVEFGQUNUT1JZQEU0MTBCNjhGLUI1NkYtNDU3NS05NjE2LTM2Nzk5RkFGNzVDQ183ZjQ5ODllOC05YTVlLTRjMzAtYjY2NC04MTQ5NDY0OGJkODQiDQp9"
+		}
+	}
+}

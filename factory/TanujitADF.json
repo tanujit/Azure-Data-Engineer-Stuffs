@@ -1,0 +1,9 @@
+{
+	"name": "TanujitADF",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6ae66fda-80b4-43ec-a9ac-0e4b3ec0f0da",
+		"tenantId": "e8f85100-d99c-4253-b44b-0af84e42d684"
+	}
+}

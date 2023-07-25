@@ -53,7 +53,8 @@
 						"referenceName": "CSV_Generic_DS",
 						"type": "DatasetReference",
 						"parameters": {
-							"directoryPath": "Customer_Full_Data"
+							"directoryPath": "Customer_Full_Data",
+							"fileName": "Customer_Full_Data"
 						}
 					}
 				]

@@ -39,7 +39,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "JSON_Customer_DS",
+						"referenceName": "JSON_Generic_DS",
 						"type": "DatasetReference"
 					}
 				]

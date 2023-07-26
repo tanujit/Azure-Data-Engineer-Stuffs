@@ -40,7 +40,11 @@
 				"outputs": [
 					{
 						"referenceName": "JSON_Generic_DS",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"directoryPath": "/",
+							"fileName": " "
+						}
 					}
 				]
 			}

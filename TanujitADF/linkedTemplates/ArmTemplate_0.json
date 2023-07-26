@@ -211,7 +211,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/JSON_Customer_DS')]",
+			"name": "[concat(parameters('factoryName'), '/JSON_Generic_DS')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -219,12 +219,27 @@
 					"referenceName": "ADLS_Gen2_LS",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"directoryPath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "JSON",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().directoryPath",
+							"type": "Expression"
+						},
 						"fileSystem": "landing"
 					}
 				},
@@ -578,9 +593,12 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "JSON_Customer_DS",
+								"referenceName": "JSON_Generic_DS",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"directoryPath": "/",
+									"fileName": " "
+								}
 							}
 						]
 					}
@@ -594,7 +612,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SQL_DB_DS')]",
-				"[concat(variables('factoryId'), '/datasets/JSON_Customer_DS')]"
+				"[concat(variables('factoryId'), '/datasets/JSON_Generic_DS')]"
 			]
 		},
 		{

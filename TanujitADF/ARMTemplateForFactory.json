@@ -141,9 +141,12 @@
 						],
 						"outputs": [
 							{
-								"referenceName": "JSON_Customer_DS",
+								"referenceName": "JSON_Generic_DS",
 								"type": "DatasetReference",
-								"parameters": {}
+								"parameters": {
+									"directoryPath": "/",
+									"fileName": " "
+								}
 							}
 						]
 					}
@@ -157,7 +160,7 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/SQL_DB_DS')]",
-				"[concat(variables('factoryId'), '/datasets/JSON_Customer_DS')]"
+				"[concat(variables('factoryId'), '/datasets/JSON_Generic_DS')]"
 			]
 		},
 		{
@@ -723,6 +726,119 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Lookup-If-Else')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"description": "Create a pipeline name 'Ingestion_Product_To_JSON' which will copy all the product records as JSON only if total number of records >10.",
+				"activities": [
+					{
+						"name": "Lookup1",
+						"type": "Lookup",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"sqlReaderQuery": "select count(*) as RecordCount from saleslt.product",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"dataset": {
+								"referenceName": "SQL_DB_Product_DS",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						}
+					},
+					{
+						"name": "If Condition",
+						"type": "IfCondition",
+						"dependsOn": [
+							{
+								"activity": "Lookup1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"userProperties": [],
+						"typeProperties": {
+							"expression": {
+								"value": "@greater(activity('Lookup1').output.firstRow.RecordCount,10)",
+								"type": "Expression"
+							},
+							"ifTrueActivities": [
+								{
+									"name": "Copy data1",
+									"type": "Copy",
+									"dependsOn": [],
+									"policy": {
+										"timeout": "0.12:00:00",
+										"retry": 0,
+										"retryIntervalInSeconds": 30,
+										"secureOutput": false,
+										"secureInput": false
+									},
+									"userProperties": [],
+									"typeProperties": {
+										"source": {
+											"type": "AzureSqlSource",
+											"queryTimeout": "02:00:00",
+											"partitionOption": "None"
+										},
+										"sink": {
+											"type": "JsonSink",
+											"storeSettings": {
+												"type": "AzureBlobFSWriteSettings"
+											},
+											"formatSettings": {
+												"type": "JsonWriteSettings"
+											}
+										},
+										"enableStaging": false
+									},
+									"inputs": [
+										{
+											"referenceName": "SQL_DB_Product_DS",
+											"type": "DatasetReference",
+											"parameters": {}
+										}
+									],
+									"outputs": [
+										{
+											"referenceName": "JSON_Generic_DS",
+											"type": "DatasetReference",
+											"parameters": {
+												"directoryPath": "Lookup_If_Else",
+												"fileName": "Products"
+											}
+										}
+									]
+								}
+							]
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/SQL_DB_Product_DS')]",
+				"[concat(variables('factoryId'), '/datasets/JSON_Generic_DS')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/CSV2_Customer_DS')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -877,7 +993,7 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/JSON_Customer_DS')]",
+			"name": "[concat(parameters('factoryName'), '/JSON_Generic_DS')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -885,12 +1001,27 @@
 					"referenceName": "ADLS_Gen2_LS",
 					"type": "LinkedServiceReference"
 				},
+				"parameters": {
+					"directoryPath": {
+						"type": "string"
+					},
+					"fileName": {
+						"type": "string"
+					}
+				},
 				"annotations": [],
 				"type": "Json",
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"folderPath": "JSON",
+						"fileName": {
+							"value": "@dataset().fileName",
+							"type": "Expression"
+						},
+						"folderPath": {
+							"value": "@dataset().directoryPath",
+							"type": "Expression"
+						},
 						"fileSystem": "landing"
 					}
 				},

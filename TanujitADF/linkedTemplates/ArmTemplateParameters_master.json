@@ -11,8 +11,17 @@
 		"AzureSqlDatabase1_connectionString": {
 			"value": ""
 		},
+		"Sftp_LS_password": {
+			"value": ""
+		},
 		"ADLS_Gen2_LS_properties_typeProperties_url": {
 			"value": "https://tanujit11031998adlsgen2.dfs.core.windows.net/"
+		},
+		"Sftp_LS_properties_typeProperties_host": {
+			"value": "test.rebex.net"
+		},
+		"Sftp_LS_properties_typeProperties_userName": {
+			"value": "demo"
 		},
 		"containerUri": {
 			"value": ""
